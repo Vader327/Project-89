@@ -83,7 +83,7 @@ export default class RecieverDetailsScreen extends React.Component{
       <View style={styles.container}>
         <View>
           <Header
-            leftComponent ={<Icon name='arrow-left' type='feather' color='#ffffff'  onPress={()=>this.props.navigation.goBack()}/>}
+            leftComponent ={<Icon name='arrow-left' type='feather' color='#ffffff' onPress={()=>this.props.navigation.goBack()}/>}
             centerComponent={{ text:"Exchange Item", style: {color: '#ffffff', fontSize: 20, fontWeight: "bold",}}}
             backgroundColor="#1c77ff" />
         </View>

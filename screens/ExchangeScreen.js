@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Animated } from 'react-native';
 import MyHeader from '../Components/MyHeader';
 import firebase from 'firebase';
 import db from '../config';
@@ -12,6 +12,22 @@ export default class ExchangeScreen extends React.Component{
       name: "",
       description: "",
     }
+    this.animatedScale = new Animated.Value(1);
+  }
+  
+	handleButtonScaleIn=()=>{
+    Animated.timing(this.animatedScale, {
+      toValue: 0.85,
+			duration: 100,
+			useNativeDriver: true,
+    }).start();
+	}
+	handleButtonScaleOut=()=>{
+    Animated.timing(this.animatedScale, {
+      toValue: 1,
+			duration: 200,
+			useNativeDriver: true,
+    }).start();
   }
 
   createUniqeId(){
@@ -50,10 +66,15 @@ export default class ExchangeScreen extends React.Component{
             placeholder="Description" multiline maxHeight={150}
             onChangeText={(text)=>{this.setState({description: text})}} value={this.state.description} />
 
-            <TouchableOpacity style={styles.button}
-            onPress={()=>{this.addItem(this.state.name, this.state.description)}}>
-              <Text style={{color: '#ffffff', fontWeight: '600', fontSize: 20,}}>Request</Text>
-            </TouchableOpacity>
+            <TouchableWithoutFeedback onPressIn={this.handleButtonScaleIn} delayPressIn={0} delayPressOut={0}
+						onPressOut={()=>{
+							this.addItem(this.state.name, this.state.description);
+							this.handleButtonScaleOut();}}>
+							<Animated.View style={[styles.button, {transform: [{scale: this.animatedScale}]}]}>
+								<Text style={{color: '#ffffff', fontWeight: '600', fontSize: 20,}}>Request</Text>
+							</Animated.View>
+						</TouchableWithoutFeedback>
+
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </View>
@@ -84,5 +105,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
 		shadowRadius: 15,
     elevation: 16,
+		transform: [{scale: 1}]
   }
 })

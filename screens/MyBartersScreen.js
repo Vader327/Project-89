@@ -88,8 +88,8 @@ export default class MyBartersScreen extends Component {
   renderItem=({item, i})=>(
     <ListItem key={i} title={item.item_name} bottomDivider
       subtitle={<Text>{"Requested By: " + item.requested_by +"\nStatus: " + item.request_status}</Text>}
-      titleStyle={{color: 'black', fontWeight: 'bold'}}
-      leftElement={<Entypo name="box" color ='#696969' size={25} />}
+      titleStyle={{color: 'black', fontFamily: 'SFBold',}} subtitleStyle={{fontFamily: 'SFMedium',}}
+      leftElement={<Entypo name="box" color ='#0394fc' size={25} />}
       rightElement={
         <TouchableOpacity onPress={()=>{this.sendItem(item)}}
         style={[styles.button, {backgroundColor: item.request_status=="Item Sent" ?"#40eb34" : "#1c77ff"}]}>

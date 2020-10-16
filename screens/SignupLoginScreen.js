@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Modal, ScrollView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Modal, ScrollView,
+				 TouchableWithoutFeedback, Keyboard, Animated } from 'react-native';
 import TradeAnimation from '../Components/TradeAnimation.js';
 import firebase from 'firebase';
 import db from '../config';
@@ -18,7 +19,24 @@ export default class SignupLoginScreen extends React.Component{
 			isModalVisible: false,
 			isLoginViewActive: true,
 		}
+		this.animatedScale = new Animated.Value(1);
 	}
+
+	handleButtonScaleIn=()=>{
+    Animated.timing(this.animatedScale, {
+      toValue: 0.8,
+			duration: 100,
+			useNativeDriver: true,
+    }).start();
+	}
+	handleButtonScaleOut=()=>{
+    Animated.spring(this.animatedScale, {
+			toValue: 1,
+			friction: 2,
+			tension: 60,
+			useNativeDriver: true,
+    }).start();
+  }
 
 	userSignup=(username, password, confirmPassword)=>{
 		if(password !== confirmPassword){
@@ -129,13 +147,17 @@ export default class SignupLoginScreen extends React.Component{
 						onChangeText={(text)=>{this.setState({password: text})}}
 						secureTextEntry={true} />				
 
-						<TouchableOpacity style={styles.login}
-						onPress={()=>{this.userLogin(this.state.username, this.state.password)}}>
-							<Text style={styles.buttonText}>Login</Text>
-						</TouchableOpacity>
+						<TouchableWithoutFeedback onPressIn={this.handleButtonScaleIn} delayPressIn={0} delayPressOut={0}
+						onPressOut={()=>{
+							this.userLogin(this.state.username, this.state.password);
+							this.handleButtonScaleOut();}}>
+							<Animated.View style={[styles.login, {transform: [{scale: this.animatedScale}]}]}>
+								<Text style={styles.buttonText}>Login</Text>
+							</Animated.View>
+						</TouchableWithoutFeedback>
 
 						<TouchableOpacity style={{marginTop: 20}}
-						onPress={()=>{this.setState({isModalVisible: true, isLoginViewActive: false})}}>
+						onPress={()=>{this.setState({isModalVisible: true, isLoginViewActive: false});}}>
 							<Text style={[styles.buttonText, {color: "#1c77ff"}]}>Sign Up</Text>
 						</TouchableOpacity>
 					</View>
@@ -166,7 +188,8 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 0},
     shadowOpacity: 1,
 		shadowRadius: 15,
-    elevation: 16,
+		elevation: 16,
+		transform: [{scale: 1}]
 	},
 	buttonText:{
 		color: '#ffffff',
@@ -176,16 +199,16 @@ const styles = StyleSheet.create({
 	},
 	title:{
 		fontSize: 30,
-		fontWeight:'600',
 		color: '#ffffff',
 		marginTop: 10,
+		fontFamily: 'Poppins',
 	},
 	loginText:{
 		fontSize: 20,
-		fontWeight:'600',
 		color: '#1c77ff',
 		marginTop: 15,
 		alignSelf: 'center',
+		fontFamily: 'Poppins',
 	},
 	modalContainer:{
 		top: '5%',

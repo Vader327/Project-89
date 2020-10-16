@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView, ScrollView, Alert, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView, Alert, TextInput, Animated } from 'react-native';
 import MyHeader from '../Components/MyHeader';
 import db from '../config';
 import firebase from 'firebase';
@@ -15,6 +15,23 @@ export default class SettingScreen extends React.Component{
 			address: '',
 			docId: '',
     }
+    this.animatedScale = new Animated.Value(1);
+  }
+
+  handleButtonScaleIn=()=>{
+    Animated.timing(this.animatedScale, {
+      toValue: 0.8,
+			duration: 100,
+			useNativeDriver: true,
+    }).start();
+	}
+	handleButtonScaleOut=()=>{
+    Animated.spring(this.animatedScale, {
+			toValue: 1,
+			friction: 2,
+			tension: 60,
+			useNativeDriver: true,
+    }).start();
   }
 
   getUserDetails=()=>{
@@ -56,10 +73,11 @@ export default class SettingScreen extends React.Component{
 
   render(){
     return(
-      <View style={{height: '100%'}}>
+      <View style={{height: '100%', backgroundColor: '#fafafa'}}>
         <MyHeader title="Settings" navigation={this.props.navigation} />
         <KeyboardAvoidingView behavior="padding" enabled style={{height: '100%'}}>
           <ScrollView style={{height: '100%'}}>
+            <View style={styles.card}>
             <Text style={styles.title}>Update Your Profile</Text>
 
             <Text style={styles.fieldName}>First Name</Text>
@@ -78,11 +96,14 @@ export default class SettingScreen extends React.Component{
             <TextInput style={styles.input} placeholder="Address" multiline={true}
             onChangeText={(text)=>{this.setState({address: text})}} value={this.state.address} />
 
-            <TouchableOpacity style={styles.updateButton}
-            onPress={this.updateUserDetails}>
-              <Text style={styles.buttonText}>Update</Text>
-            </TouchableOpacity>
+            <TouchableWithoutFeedback onPressIn={this.handleButtonScaleIn} delayPressIn={0} delayPressOut={0}
+						onPressOut={()=>{this.updateUserDetails(); this.handleButtonScaleOut()}}>
+							<Animated.View style={[styles.updateButton, {transform: [{scale: this.animatedScale}]}]}>
+								<Text style={styles.buttonText}>Update</Text>
+							</Animated.View>
+						</TouchableWithoutFeedback>
 
+            </View>
           </ScrollView>
         </KeyboardAvoidingView>
       </View>
@@ -113,24 +134,37 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
 		shadowRadius: 15,
     elevation: 16,
+		transform: [{scale: 1}],
 	},
 	buttonText:{
 		color: '#ffffff',
 		fontSize: 17,
-		fontWeight: '600',
+    fontFamily: 'Poppins',
 		alignSelf: 'center',
   },
   title:{
     alignSelf: 'center',
     marginTop: 10,
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: 'Poppins',
   },
   fieldName:{
     left: '10%',
     marginTop: 40,
     textTransform: 'uppercase',
-    fontWeight: '900',
     color: '#1c77ff',
+    fontFamily: 'SFBold',
+  },
+  card:{
+    backgroundColor: '#ffffff',
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: 10,
+    shadowColor: "#c9c9c9",
+    shadowOffset: {width: 0, height: 5},
+    shadowOpacity: 1,
+    shadowRadius: 15,
+    elevation: 16,
+    borderRadius: 20,
   }
 })
