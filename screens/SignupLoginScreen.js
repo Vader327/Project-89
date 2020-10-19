@@ -51,6 +51,7 @@ export default class SignupLoginScreen extends React.Component{
 					address: this.state.address,
 					contact: this.state.contact,
 					email_id: this.state.username,
+					IsItemRequestActive: false,
 				})
 				return Alert.alert("User added successfully!", '', [{
 					text: 'Ok',
