@@ -29,7 +29,7 @@ export default class MyHeader extends React.Component{
   BellIconWithBadge=()=>{
     return(
       <View>
-        <Icon name='bell' type='feather' color='#ffffff' size={25}
+        <Icon name='notifications' type='ionicons' color='#ffffff' size={25}
           onPress={()=>this.props.navigation.navigate('Notifications')}/>
         <Badge value={this.state.value} status="error"
         containerStyle={{position: 'absolute', top: -4, right: -4}} />

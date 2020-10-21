@@ -202,14 +202,14 @@ const styles = StyleSheet.create({
 		fontSize: 30,
 		color: '#ffffff',
 		marginTop: 10,
-		fontFamily: 'Poppins',
+		fontWeight: '600',
 	},
 	loginText:{
 		fontSize: 20,
 		color: '#1c77ff',
 		marginTop: 15,
 		alignSelf: 'center',
-		fontFamily: 'Poppins',
+		fontWeight: '600',
 	},
 	modalContainer:{
 		top: '5%',

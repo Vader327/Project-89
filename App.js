@@ -1,12 +1,10 @@
 import React from 'react';
-import { LogBox } from "react-native";
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import SignupLoginScreen from './screens/SignupLoginScreen';
 import { AppDrawerNavigator } from './Components/AppDrawerNavigator';
 import { AppTabNavigator } from './Components/AppTabNavigator';
 import * as Font from 'expo-font';
 
-LogBox.ignoreAllLogs();
 
 export default class App extends React.Component{
   constructor(){
