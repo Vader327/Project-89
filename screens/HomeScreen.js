@@ -35,7 +35,8 @@ export default class HomeScreen extends React.Component{
 
   renderItem=({item, i})=>(
     <ListItem key={i} title={item.item_name} containerStyle={styles.list}
-    subtitle={ <Text numberOfLines={1}>{item.description}</Text> }
+    subtitle={<Text numberOfLines={1}>{item.description}</Text>}
+    description={item.item_value}
     titleStyle={{color: 'black', fontWeight: 'bold'}}
     rightElement={
       <TouchableOpacity style={styles.button}

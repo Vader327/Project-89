@@ -17,6 +17,8 @@ export default class ExchangeScreen extends React.Component{
       itemStatus: "",
       userDocId: '',
       docId: '',
+      itemValue: 0,
+      currencyCode: "",
     }
     this.animatedScale = new Animated.Value(1);
   }
@@ -50,7 +52,8 @@ export default class ExchangeScreen extends React.Component{
         'description': description,
         'request_id': randomRequestId,
         'item_status': 'requested',
-        'date': firebase.firestore.FieldValue.serverTimestamp()
+        'date': firebase.firestore.FieldValue.serverTimestamp(),
+        "item_value": this.state.itemValue,
       })
 
       await this.getItemRequest();
@@ -64,7 +67,7 @@ export default class ExchangeScreen extends React.Component{
         })
       })
 
-      this.setState({name: "", description: "", requestId: randomRequestId})
+      this.setState({name: "", description: "", requestId: randomRequestId, itemValue: ""})
       return Alert.alert("Item Added Successfully!")
     }
     else{
@@ -84,10 +87,10 @@ export default class ExchangeScreen extends React.Component{
   getIsExchangeRequestActive(){
     db.collection('users').where('email_id', '==', this.state.userID).onSnapshot(snapshot=>{
       snapshot.forEach(doc=>{
-        console.log()
         this.setState({
           IsExchangeRequestActive: doc.data().IsExchangeRequestActive,
           userDocId: doc.id,
+          currencyCode: doc.data().currency_code,
         })
       })
     })
@@ -103,25 +106,23 @@ export default class ExchangeScreen extends React.Component{
             requestedItemName: doc.data().item_name,
             itemStatus: doc.data().item_status,
             docId: doc.id,
-          })
+            itemValue: doc.data().item_value,
+          }, ()=>{this.getData()})
         }
       })
     })
   }
 
   sendNotification=()=>{
-    console.log("hi")
     db.collection('users').where('email_id', '==', this.state.userID).get().then(snapshot=>{
       snapshot.forEach(doc=>{
         var name = doc.data().first_name;
         var lastName = doc.data().last_name;
-        console.log("hi1")
 
         db.collection('all_donations').where('request_id', '==', this.state.requestId).get().then(snapshot=>{
           snapshot.forEach(doc=>{
             var donorId = doc.data().donor_id;
             var itemName = doc.data().item_name;
-            console.log("hi2")
 
             db.collection('all_notifications').add({
               'targeted_user_id': donorId,
@@ -132,6 +133,15 @@ export default class ExchangeScreen extends React.Component{
           })
         })
       })
+    })
+  }
+
+  getData(){
+    fetch("http://data.fixer.io/api/latest?access_key=5224cf7163a24e9ed5db5ba31d86878c&format=1")
+    .then(response=>{return response.json()})
+    .then(responseData=>{
+      var value = "€" + Math.round(this.state.itemValue / responseData.rates[this.state.currencyCode]);
+      this.setState({itemValue: value})
     })
   }
 
@@ -163,6 +173,11 @@ export default class ExchangeScreen extends React.Component{
             </View>
 
             <View style={styles.field}>
+              <Text style={styles.fieldName}>Value:</Text>
+              <Text style={styles.fieldValue}>{this.state.itemValue}</Text>
+            </View>
+
+            <View style={styles.field}>
               <Text style={styles.fieldName}>Status:</Text>
               <Text style={styles.fieldValue}>{this.state.itemStatus.charAt(0).toUpperCase() + this.state.itemStatus.slice(1)}</Text>
             </View>
@@ -189,6 +204,9 @@ export default class ExchangeScreen extends React.Component{
             <KeyboardAvoidingView style={{height: '100%'}} enabled behavior="padding">
               <TextInput style={styles.formatTextInput} placeholder="Item Name"
               onChangeText={(text)=>{this.setState({name: text})}} value={this.state.name} />
+
+              <TextInput style={styles.formatTextInput} placeholder="Item Value" maxLength={8}
+              onChangeText={(text)=>{this.setState({itemValue: text})}} value={this.state.itemValue} />
 
               <TextInput style={styles.formatTextInput}
               placeholder="Description" multiline maxHeight={150}

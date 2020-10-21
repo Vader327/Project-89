@@ -18,6 +18,7 @@ export default class RecieverDetailsScreen extends React.Component{
       recieverAddress: '',
       recieverRequestDocId: '',
       username: '',
+      value: 0,
     }
   }
 
@@ -35,8 +36,8 @@ export default class RecieverDetailsScreen extends React.Component{
   
     db.collection('requested_items').where('request_id','==',this.state.requestId).get()
     .then(snapshot=>{
-      snapshot.forEach(doc => {
-        this.setState({recieverRequestDocId: doc.id})
+      snapshot.forEach(doc=>{
+        this.setState({recieverRequestDocId: doc.id, value: doc.data().item_value})
       })
     })
   }
@@ -93,6 +94,9 @@ export default class RecieverDetailsScreen extends React.Component{
             <Card title="Item Information" titleStyle={{fontSize: 20}} containerStyle={{borderRadius: 20,}}>
               <Card containerStyle={styles.card}>
                   <Text style={{fontWeight: 'bold'}}>Name: {this.state.itemName}</Text>
+              </Card>
+              <Card containerStyle={styles.card}>
+                <Text style={{fontWeight:'bold'}}>Value: {this.state.value}</Text>
               </Card>
               <Card containerStyle={styles.card}>
                 <Text style={{fontWeight:'bold'}}>Reason: {this.state.description}</Text>
