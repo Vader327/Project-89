@@ -6,7 +6,7 @@ export default class TradeAnimation extends React.Component{
         return(
             <LottieView
             source={require('../assets/10800-retail-exchange.json')}
-            style={{width: '80%', alignSelf: 'center'}}
+            style={{width: '70%', alignSelf: 'center'}}
             autoPlay loop />
         )
     }

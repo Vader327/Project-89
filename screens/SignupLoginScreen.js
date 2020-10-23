@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Modal, ScrollView,
 				 TouchableWithoutFeedback, Keyboard, Animated } from 'react-native';
+import { Input } from 'react-native-elements';
+import { RFValue } from 'react-native-responsive-fontsize';
 import TradeAnimation from '../Components/TradeAnimation.js';
 import firebase from 'firebase';
 import db from '../config';
@@ -140,18 +142,20 @@ export default class SignupLoginScreen extends React.Component{
 				<TouchableWithoutFeedback style={{height: '100%'}} onPress={Keyboard.dismiss}>
 					<View>
 						<Text style={styles.loginText}>Login</Text>
-						<TextInput style={styles.input} placeholder="Email"
-						onChangeText={(text)=>{this.setState({username: text})}}
-						keyboardType="email-address" />
+						<Input inputContainerStyle={[styles.input, {marginTop: 0}]} placeholder="email@address.com"
+						label="Email" labelStyle={{left: '5%'}}	keyboardType="email-address"
+						leftIcon={{type: 'ionicons', name: 'mail', color: 'gray'}}
+						onChangeText={(text)=>{this.setState({username: text})}} />
 
-						<TextInput style={styles.input} placeholder="Password"
-						onChangeText={(text)=>{this.setState({password: text})}}
+						<Input inputContainerStyle={[styles.input, {marginTop: 0}]} placeholder="Password" labelStyle={{left: '5%'}}
+						leftIcon={{type: 'ionicons', name: 'lock', color: 'gray'}}
+						onChangeText={(text)=>{this.setState({password: text})}} label="Password"
 						secureTextEntry={true} />				
 
 						<TouchableWithoutFeedback onPressIn={this.handleButtonScaleIn} delayPressIn={0} delayPressOut={0}
 						onPressOut={()=>{
 							this.userLogin(this.state.username, this.state.password);
-							this.handleButtonScaleOut();}}>
+							this.handleButtonScaleOut()}}>
 							<Animated.View style={[styles.login, {transform: [{scale: this.animatedScale}]}]}>
 								<Text style={styles.buttonText}>Login</Text>
 							</Animated.View>
@@ -172,12 +176,12 @@ const styles = StyleSheet.create({
 	input:{
 		borderBottomColor: 'lightgray',
 		borderBottomWidth: 3,
-		marginTop: 30,
-		width: '80%',
+		width: '90%',
 		alignSelf: 'center',
+		marginTop: 30,
 	},
 	login:{
-		marginTop: 80,
+		marginTop: 20,
 		alignSelf: 'center',
 		backgroundColor: '#1c77ff',
 		width: '60%',
@@ -194,20 +198,21 @@ const styles = StyleSheet.create({
 	},
 	buttonText:{
 		color: '#ffffff',
-		fontSize: 17,
+		fontSize: RFValue(20),
 		fontWeight: '600',
 		alignSelf: 'center',
 	},
 	title:{
-		fontSize: 30,
+		fontSize: RFValue(37),
 		color: '#ffffff',
 		marginTop: 10,
 		fontWeight: '600',
 	},
 	loginText:{
-		fontSize: 20,
+		fontSize: RFValue(23),
 		color: '#1c77ff',
 		marginTop: 15,
+		marginBottom: 20,
 		alignSelf: 'center',
 		fontWeight: '600',
 	},
@@ -231,7 +236,7 @@ const styles = StyleSheet.create({
 	},
 	container:{
 		alignItems:'center',
-		paddingTop: 50,
+		paddingTop: 20,
 		backgroundColor: '#1c77ff',
 		paddingBottom: 10,
 		transform: [{scaleX: 1.5}],

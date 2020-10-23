@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import{ Card, Header, Icon } from 'react-native-elements';
+import { RFValue } from 'react-native-responsive-fontsize';
 import firebase from 'firebase';
 import db from '../config';
 
@@ -91,30 +92,30 @@ export default class RecieverDetailsScreen extends React.Component{
 
         <ScrollView>
           <View>
-            <Card title="Item Information" titleStyle={{fontSize: 20}} containerStyle={{borderRadius: 20,}}>
+            <Card title="Item Information" titleStyle={{fontSize: RFValue(23)}} containerStyle={{borderRadius: 20}}>
               <Card containerStyle={styles.card}>
-                  <Text style={{fontWeight: 'bold'}}>Name: {this.state.itemName}</Text>
+                  <Text style={styles.field}>Name: {this.state.itemName}</Text>
               </Card>
               <Card containerStyle={styles.card}>
-                <Text style={{fontWeight:'bold'}}>Value: {this.state.value}</Text>
+                <Text style={styles.field}>Value: {this.state.value}</Text>
               </Card>
               <Card containerStyle={styles.card}>
-                <Text style={{fontWeight:'bold'}}>Reason: {this.state.description}</Text>
+                <Text style={styles.field}>Reason: {this.state.description}</Text>
               </Card>
             </Card>
           </View>
 
           <View>
-            <Card title="Reciever Information" titleStyle={{fontSize: 20}}
+            <Card title="Reciever Information" titleStyle={{fontSize: RFValue(23)}}
             containerStyle={{marginBottom: 20, borderRadius: 20,}}>
               <Card containerStyle={styles.card}>
-                <Text style={{fontWeight: 'bold'}}>Name: {this.state.recieverName}</Text>
+                <Text style={styles.field}>Name: {this.state.recieverName}</Text>
               </Card>
               <Card containerStyle={styles.card}>
-                <Text style={{fontWeight: 'bold'}}>Contact: {this.state.recieverContact}</Text>
+                <Text style={styles.field}>Contact: {this.state.recieverContact}</Text>
               </Card>
               <Card containerStyle={styles.card}>
-                <Text style={{fontWeight: 'bold'}}>Address: {this.state.recieverAddress}</Text>
+                <Text style={styles.field}>Address: {this.state.recieverAddress}</Text>
               </Card>
             </Card>
           </View>
@@ -166,5 +167,8 @@ const styles = StyleSheet.create({
   },
   card:{
     borderRadius: 10,
+  },
+  field:{
+    fontWeight: '700',
   }
 })

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Header, Icon, Badge } from 'react-native-elements';
+import { RFValue } from 'react-native-responsive-fontsize';
 import firebase from 'firebase';
 import db from '../config';
 
@@ -42,7 +43,7 @@ export default class MyHeader extends React.Component{
     return(
       <Header backgroundColor="#1c77ff"
       leftComponent={<Icon name='menu' type='feather' color='#ffffff' onPress={()=>this.props.navigation.toggleDrawer()}/>}
-      centerComponent={{text: this.props.title, style:{color: "#ffffff", fontSize: 20, fontFamily: 'Poppins'}}}
+      centerComponent={{text: this.props.title, style:{color: "#ffffff", fontSize: RFValue(25), fontFamily: 'Poppins'}}}
       rightComponent={<this.BellIconWithBadge {...this.props} />} />
     )
   }

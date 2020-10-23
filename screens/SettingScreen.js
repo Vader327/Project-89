@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView, Alert, TextInput, Animated } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 import MyHeader from '../Components/MyHeader';
 import db from '../config';
 import firebase from 'firebase';
@@ -144,8 +145,9 @@ const styles = StyleSheet.create({
   },
   title:{
     alignSelf: 'center',
-    marginTop: 10,
-    fontSize: 18,
+    marginTop: 20,
+    color: '#1c77ff',
+    fontSize: RFValue(22),
     fontFamily: 'Poppins',
   },
   fieldName:{

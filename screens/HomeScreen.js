@@ -44,7 +44,7 @@ export default class HomeScreen extends React.Component{
         <Text style={{color: '#ffffff', fontSize: 15, fontWeight: '600'}}>Exchange</Text>
         <Entypo name="chevron-right" size={18} color="#ffffff" />
       </TouchableOpacity>} />
-    )
+  )
   
   
   render(){

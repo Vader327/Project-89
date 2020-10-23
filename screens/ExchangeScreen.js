@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Animated } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Alert, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Animated } from 'react-native';
+import { Input } from 'react-native-elements';
 import MyHeader from '../Components/MyHeader';
 import firebase from 'firebase';
 import db from '../config';
@@ -107,7 +108,7 @@ export default class ExchangeScreen extends React.Component{
             itemStatus: doc.data().item_status,
             docId: doc.id,
             itemValue: doc.data().item_value,
-          }, ()=>{this.getData()})
+          }, this.getData)
         }
       })
     })
@@ -141,7 +142,9 @@ export default class ExchangeScreen extends React.Component{
     .then(response=>{return response.json()})
     .then(responseData=>{
       var value = "€" + Math.round(this.state.itemValue / responseData.rates[this.state.currencyCode]);
-      this.setState({itemValue: value})
+      if(this.state.itemValue[0] != "€"){
+        this.setState({itemValue: value})
+      }
     })
   }
 
@@ -187,7 +190,8 @@ export default class ExchangeScreen extends React.Component{
           onPressOut={()=>{
             this.sendNotification()
             this.updateItemRequestStatus();
-            this.receivedItems(this.state.requestedItemName)
+            this.receivedItems(this.state.requestedItemName);
+            this.setState({itemValue: 0})
           }}>
             <Animated.View style={[styles.button, {transform: [{scale: this.animatedScale}], width: '80%',}]}>
               <Text style={{color: '#ffffff', fontWeight: '600', fontSize: 20,}}>I have received the Item</Text>
@@ -202,20 +206,20 @@ export default class ExchangeScreen extends React.Component{
           <MyHeader title="Add Item" navigation={this.props.navigation} />
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{height: '100%'}}>
             <KeyboardAvoidingView style={{height: '100%'}} enabled behavior="padding">
-              <TextInput style={styles.formatTextInput} placeholder="Item Name"
+              <Input inputContainerStyle={[styles.formatTextInput, {marginTop: 30}]} placeholder="Item Name"
               onChangeText={(text)=>{this.setState({name: text})}} value={this.state.name} />
 
-              <TextInput style={styles.formatTextInput} placeholder="Item Value" maxLength={8}
+              <Input inputContainerStyle={styles.formatTextInput} placeholder="Item Value" maxLength={8}
               onChangeText={(text)=>{this.setState({itemValue: text})}} value={this.state.itemValue} />
 
-              <TextInput style={styles.formatTextInput}
-              placeholder="Description" multiline maxHeight={150}
-              onChangeText={(text)=>{this.setState({description: text})}} value={this.state.description} />
+              <Input inputContainerStyle={styles.formatTextInput} value={this.state.description}
+              placeholder="Description" multiline numberOfLines={8}
+              onChangeText={(text)=>{this.setState({description: text})}} />
 
               <TouchableWithoutFeedback onPressIn={this.handleButtonScaleIn} delayPressIn={0} delayPressOut={0}
               onPressOut={()=>{
                 this.addItem(this.state.name, this.state.description);
-                this.handleButtonScaleOut();}}>
+                this.handleButtonScaleOut()}}>
                 <Animated.View style={[styles.button, {transform: [{scale: this.animatedScale}]}]}>
                   <Text style={{color: '#ffffff', fontWeight: '600', fontSize: 20,}}>Request</Text>
                 </Animated.View>
@@ -233,8 +237,7 @@ const styles = StyleSheet.create({
   formatTextInput:{
     borderBottomColor: 'lightgray',
 		borderBottomWidth: 3,
-		marginTop: 30,
-		width: '80%',
+		width: '90%',
 		alignSelf: 'center',
   },
   button:{

@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { DrawerItems } from 'react-navigation-drawer';
 import { Ionicons } from '@expo/vector-icons';
 import { Avatar, BottomSheet } from 'react-native-elements';
+import { RFValue } from 'react-native-responsive-fontsize';
 import firebase from 'firebase';
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
@@ -57,7 +58,7 @@ export default class CustomSideBarMenu extends React.Component{
     var blob = await response.blob();
     var ref = firebase.storage().ref().child('user_profiles/' + imageName)
 
-    return ref.put(blob).then((response)=>{this.fetchImage(response)})
+    return ref.put(blob).then((response)=>{this.fetchImage(imageName)})
   }
 
   fetchImage=(imageName)=>{
@@ -73,7 +74,6 @@ export default class CustomSideBarMenu extends React.Component{
         this.setState({
           name: doc.data().first_name + " " + doc.data().last_name,
           docId: doc.id,
-          image: doc.data().image,
           email: doc.data().email_id,
         })
       })
@@ -94,13 +94,15 @@ export default class CustomSideBarMenu extends React.Component{
            onPress={()=>this.props.navigation.toggleDrawer()} />
           
           <Avatar rounded source={{uri: this.state.image}} size="large" icon={{name: "user", type: "font-awesome"}}
-          onPress={()=>{this.setState({isModalVisible: true})}} showAccessory />
+          onPress={()=>{this.setState({isModalVisible: true})}}>
+            <Avatar.Accessory size={27} />
+          </Avatar>
 
           <View style={{marginTop: 10, alignItems: 'center'}}>
-            <Text style={{fontFamily: 'Poppins', fontSize: 20, color: 'white'}}>
+            <Text style={{fontFamily: 'Poppins', fontSize: RFValue(25), color: 'white'}}>
               {this.state.name}
             </Text>
-            <Text style={{fontFamily: 'SFMedium', fontSize: 15, color: 'white'}}>
+            <Text style={{fontFamily: 'SFMedium', fontSize: RFValue(18), color: 'white'}}>
               {this.state.email}
             </Text>
           </View>
@@ -132,8 +134,8 @@ export default class CustomSideBarMenu extends React.Component{
             this.props.navigation.navigate("SignupLoginScreen");
             firebase.auth().signOut();
           }}>
-            <Ionicons name="ios-log-out" size={23} color="#000000" style={{marginRight: 30, transform: [{translateY: -3}]}} />
-            <Text style={styles.logOutText}>Log Out</Text>
+            <Ionicons name="ios-log-out" size={20} color="#696969" />
+            <Text style={{fontWeight: '700', marginLeft: 38}}>Log Out</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -155,7 +157,7 @@ var styles = StyleSheet.create({
   logOutButton:{
     flexDirection: 'row',
     flexWrap: 'wrap',
-    padding: 10,
+    padding: 20,
   },
   menuButton:{
     backgroundColor: 'white',
@@ -167,8 +169,8 @@ var styles = StyleSheet.create({
   },
   menuText:{
     color: '#0a84ff',
-    fontSize: 18,
-    fontFamily: 'SFMedium',
+    fontSize: RFValue(22),
+    fontWeight: '500',
   },
   container:{
     flex: 0.6,
