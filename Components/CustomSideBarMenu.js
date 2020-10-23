@@ -74,8 +74,7 @@ export default class CustomSideBarMenu extends React.Component{
         this.setState({
           name: doc.data().first_name + " " + doc.data().last_name,
           docId: doc.id,
-          email: doc.data().email_id,
-          image: doc.data().image,
+          email: doc.data().email_id
         })
       })
     })
